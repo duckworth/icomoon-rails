@@ -10,9 +10,9 @@ class SourceFile < Thor
     set_name name
   end
 
-  desc 'move', 'move source files to vendor/assets'
+  desc 'move', 'move source files to app/assets'
   def move
-    self.destination_root = 'vendor/assets'
+    self.destination_root = 'app/assets'
     copy_file "#{@extract_path}/style.css", "stylesheets/#{@name}/style.css"
     if File.exist? "#{@extract_path}/lte-ie7.js"
       copy_file "#{@extract_path}/lte-ie7.js", "javascripts/#{@name}/lte-ie7.js"
@@ -24,7 +24,7 @@ class SourceFile < Thor
 
   desc 'convert css to sass file', 'convert css to sass file by sass-convert'
   def convert
-    self.destination_root = 'vendor/assets'
+    self.destination_root = 'app/assets'
     inside destination_root do
       run "sass-convert -F css -T sass stylesheets/#{@name}/style.css stylesheets/#{@name}/style.css.sass"
       gsub_file "stylesheets/#{@name}/style.css.sass", "'fonts/", "'#{@name}/"
@@ -34,7 +34,7 @@ class SourceFile < Thor
 
   desc 'clean up useless files', 'clean up useless files'
   def cleanup
-    self.destination_root = 'vendor/assets'
+    self.destination_root = 'app/assets'
     remove_file "stylesheets/#{@name}/style.css"
     FileUtils.rm_rf self.class.source_root
   end
